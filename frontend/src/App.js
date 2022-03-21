@@ -9,8 +9,12 @@ import ethLogo from './assets/ethlogo.png';
 import { networks } from './utils/networks';
 
 // Constants
-const TWITTER_HANDLE = 'home';
-const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
+const TWITTER_HANDLE1 = 'kryptobiz';
+const TWITTER_HANDLE2 = 'garyghayrat';
+const TWITTER_HANDLE3 = 'OmniscientHrzn';
+const TWITTER_LINK1 = `https://twitter.com/${TWITTER_HANDLE1}`;
+const TWITTER_LINK2 = `https://twitter.com/${TWITTER_HANDLE2}`;
+const TWITTER_LINK3 = `https://twitter.com/${TWITTER_HANDLE3}`;
 const CONTRACT_ADDRESS = '0x72F376376B78DDa1188C5Bdcda01085a683fe8c5';
 const SOCIAL_CONTRACT_ADDRESS = '0x6DA1b53a7B1E05FD9042bF33A88F3c03177A7663';
 
@@ -27,6 +31,7 @@ const App = () => {
 	const [weiBalance, setweiBalance] = useState(0);
 	const [habit1, setHabit1] = useState('');
 	const [checking, setChecking] = useState(false);
+	const [streak, setStreak] = useState(0);
 
 	//Social
 	const [friend, setFriend] = useState('');
@@ -37,6 +42,7 @@ const App = () => {
 	const [weiBalance2, setweiBalance2] = useState(0);
 	const [habit2, setHabit2] = useState('');
 	const [checking2, setChecking2] = useState(false);
+	const [streak2, setStreak2] = useState(0);
 	//tests
 	//connectwallet method:
 	const connectWallet = async () => {
@@ -263,6 +269,8 @@ const App = () => {
 
 				console.log("The users intentions:")
 				intention = await contract.getUserIntention();
+				let _streak = await contract.checkInCount(currentAccount);
+				setStreak(_streak);
 				setNumberOfDays(intention[0]);
 				setnumberOfDefaults(intention[1]);
 				setweiDeposited(ethers.utils.formatUnits(intention[3].toString()));
@@ -296,12 +304,16 @@ const App = () => {
 				let check2 = await contract.userAddresses(currentAccount);
 				console.log("BOOL2:", check2);
 				setChecking2(check2);
+				
 
 				// let habitAddress = await contract.habit();
 				// console.log("Token address:",habitAddress);
 
 				// console.log("The users intentions:")
 				let friendsAddr = await socialContract.returnFriends();
+
+				let _streak2 = await contract.checkInCount(friendsAddr);
+				setStreak2(_streak2);
 				console.log("Your friend's address is " + friendsAddr[0]);
 				intention = await contract.getSpecificUserIntention(friendsAddr[0]);
 				setNumberOfDays2(intention[0]);
@@ -457,7 +469,7 @@ const App = () => {
 
 					<div className="profile-heading">
 						<h1>
-							Your habit: {habit1}
+							Your habit: {habit1} Day {streak}
 						</h1>
 					</div>
 
@@ -516,7 +528,7 @@ const App = () => {
 	
 						<div className="profile-heading">
 							<h1>
-								Your friend's habit: {habit2}
+								Your friend's habit: {habit2} Day {streak2}
 							</h1>
 						</div>
 	
@@ -587,13 +599,28 @@ const App = () => {
 				{!currentAccount && renderNotConnectedContainer()} */}
 
 				<div className="footer-container">
+					<p className="">Built by:</p>
 					<img alt="Twitter Logo" className="twitter-logo" src={twitterLogo} />
 					<a
 						className="footer-text"
-						href={TWITTER_LINK}
+						href={TWITTER_LINK1}
 						target="_blank"
 						rel="noreferrer"
-					>{`built with @${TWITTER_HANDLE}`}</a>
+					>{`@${TWITTER_HANDLE1}`}</a>
+					<img alt="Twitter Logo" className="twitter-logo" src={twitterLogo} />
+					<a
+						className="footer-text"
+						href={TWITTER_LINK2}
+						target="_blank"
+						rel="noreferrer"
+					>{`@${TWITTER_HANDLE2}`}</a>
+					<img alt="Twitter Logo" className="twitter-logo" src={twitterLogo} />
+					<a
+						className="footer-text"
+						href={TWITTER_LINK3}
+						target="_blank"
+						rel="noreferrer"
+					>{`@${TWITTER_HANDLE3}`}</a>
 				</div>
 			</div>
 		</div>
